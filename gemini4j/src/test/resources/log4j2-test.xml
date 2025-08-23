@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Console appender for test output -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        
+        <!-- File appender for test logs -->
+        <File name="TestFile" fileName="target/test-logs/gemini4j-tests.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Gemini4J package logging -->
+        <Logger name="de.entwicklertraining.gemini4j" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TestFile"/>
+        </Logger>
+        
+        <!-- WireMock logging (only errors) -->
+        <Logger name="org.wiremock" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        
+        <!-- HTTP client logging for debugging -->
+        <Logger name="org.apache.http" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        
+        <!-- Test framework logging -->
+        <Logger name="org.junit" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        
+        <!-- Root logger -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TestFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

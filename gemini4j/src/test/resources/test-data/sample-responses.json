@@ -1,0 +1,241 @@
+{
+  "successful_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "I'm doing well, thank you for asking!"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0,
+        "safetyRatings": [
+          {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "probability": "NEGLIGIBLE"
+          },
+          {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "probability": "NEGLIGIBLE"
+          },
+          {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "probability": "NEGLIGIBLE"
+          },
+          {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "probability": "NEGLIGIBLE"
+          }
+        ]
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 10,
+      "candidatesTokenCount": 15,
+      "totalTokenCount": 25
+    }
+  },
+  
+  "function_call_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "functionCall": {
+                "name": "get_weather",
+                "args": {
+                  "location": "San Francisco, CA"
+                }
+              }
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 25,
+      "candidatesTokenCount": 8,
+      "totalTokenCount": 33
+    }
+  },
+  
+  "structured_output_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "{\"name\": \"John Doe\", \"age\": 30, \"city\": \"New York\"}"
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 15,
+      "candidatesTokenCount": 12,
+      "totalTokenCount": 27
+    }
+  },
+  
+  "refusal_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [],
+          "role": "model",
+          "refusal": "I cannot provide information about that topic as it may be harmful."
+        },
+        "finishReason": "OTHER",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 20,
+      "candidatesTokenCount": 0,
+      "totalTokenCount": 20
+    }
+  },
+  
+  "thinking_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "After considering the problem carefully, the answer is 42."
+            },
+            {
+              "thought": "Let me think about this step by step. First, I need to understand what the user is asking..."
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0,
+        "thinkingMetadata": {
+          "tokensUsed": 150
+        }
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 30,
+      "candidatesTokenCount": 25,
+      "totalTokenCount": 55
+    }
+  },
+  
+  "multipart_response": {
+    "candidates": [
+      {
+        "content": {
+          "parts": [
+            {
+              "text": "Here's the analysis: "
+            },
+            {
+              "text": "The data shows a clear trend upward."
+            },
+            {
+              "text": " In conclusion, the results are positive."
+            }
+          ],
+          "role": "model"
+        },
+        "finishReason": "STOP",
+        "index": 0
+      }
+    ],
+    "usageMetadata": {
+      "promptTokenCount": 40,
+      "candidatesTokenCount": 18,
+      "totalTokenCount": 58
+    }
+  },
+  
+  "error_responses": {
+    "bad_request": {
+      "error": {
+        "code": 400,
+        "message": "Invalid request: missing required field 'contents'",
+        "status": "INVALID_ARGUMENT",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.BadRequest",
+            "fieldViolations": [
+              {
+                "field": "contents",
+                "description": "Field is required"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    
+    "unauthorized": {
+      "error": {
+        "code": 401,
+        "message": "Request is missing required authentication credential",
+        "status": "UNAUTHENTICATED"
+      }
+    },
+    
+    "forbidden": {
+      "error": {
+        "code": 403,
+        "message": "Access denied. API key does not have permission",
+        "status": "PERMISSION_DENIED"
+      }
+    },
+    
+    "not_found": {
+      "error": {
+        "code": 404,
+        "message": "Model not found",
+        "status": "NOT_FOUND"
+      }
+    },
+    
+    "rate_limit": {
+      "error": {
+        "code": 429,
+        "message": "Resource has been exhausted (e.g. check quota)",
+        "status": "RESOURCE_EXHAUSTED",
+        "details": [
+          {
+            "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+            "reason": "RATE_LIMIT_EXCEEDED",
+            "domain": "googleapis.com"
+          }
+        ]
+      }
+    },
+    
+    "internal_error": {
+      "error": {
+        "code": 500,
+        "message": "Internal server error",
+        "status": "INTERNAL"
+      }
+    },
+    
+    "service_unavailable": {
+      "error": {
+        "code": 503,
+        "message": "Service temporarily unavailable",
+        "status": "UNAVAILABLE"
+      }
+    }
+  }
+}
