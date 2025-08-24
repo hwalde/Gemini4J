@@ -30,6 +30,7 @@ import java.util.Set;
  */
 public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatCompletionResponse> {
 
+    private final GeminiClient client;
     private final String model;
     private final Double temperature; // 0..2
     private final Integer topK;      // up to ?
@@ -47,6 +48,7 @@ public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatC
 
     GeminiChatCompletionRequest(
             Builder builder,
+            GeminiClient client,
             String model,
             Double temperature,
             Integer topK,
@@ -63,6 +65,7 @@ public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatC
             Integer thinkingBudget
     ) {
         super(builder); // Neuer Parameter im Super-Konstruktor
+        this.client = client;
         this.model = model;
         this.temperature = temperature;
         this.topK = topK;
@@ -146,7 +149,14 @@ public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatC
     @Override
     public String getRelativeUrl() {
         // Return the relative URL path for the Gemini API endpoint
-        return "/v1beta/models/" + model + ":generateContent";
+        String url = "/v1beta/models/" + model + ":generateContent";
+        
+        // Add API key as query parameter if available
+        if (client.getApiKey() != null && !client.getApiKey().isEmpty()) {
+            url += "?key=" + client.getApiKey();
+        }
+        
+        return url;
     }
     
 
@@ -191,7 +201,7 @@ public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatC
         if (temperature != null || topK != null || topP != null || maxOutputTokens != null
                 || (stopSequences != null && !stopSequences.isEmpty())
                 || (responseMimeType != null && !responseMimeType.isBlank())
-                || responseSchema != null) {
+                || responseSchema != null || thinkingBudget != null) {
             JSONObject genConfig = new JSONObject();
             if (temperature != null) {
                 genConfig.put("temperature", temperature);
@@ -456,7 +466,7 @@ public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatC
             // Download the image and convert to base64
             byte[] imageBytes;
             try {
-                java.net.URL imageUrl = new java.net.URL(url);
+                java.net.URL imageUrl = java.net.URI.create(url).toURL();
                 java.net.HttpURLConnection connection = (java.net.HttpURLConnection) imageUrl.openConnection();
                 connection.setRequestProperty("User-Agent", "Mozilla/5.0");
                 try (java.io.InputStream in = connection.getInputStream()) {
@@ -585,6 +595,7 @@ public final class GeminiChatCompletionRequest extends GeminiRequest<GeminiChatC
         public GeminiChatCompletionRequest build() {
             return new GeminiChatCompletionRequest(
                     this,
+                    client,
                     model,
                     temperature,
                     topK,

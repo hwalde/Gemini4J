@@ -21,7 +21,7 @@ public class GeminiChatCompletionWithVisionBase64Example {
                 .model("gemini-2.5-flash-lite") // or any Gemini model that supports vision
                 .addMessage("user", "Please describe the following photo:")
                 // Using the newly created method addImageByBase64
-                .addImageByBase64(Path.of("src", "main", "resources", "images", "AboutMe.jpg"))
+                .addImageByBase64(Path.of("gemini4j-examples", "src", "main", "resources", "image.jpg"))
                 .execute();
 
         // Print model's response

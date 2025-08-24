@@ -18,7 +18,7 @@ public class GeminiChatCompletionWithVisionExample {
     public static void main(String[] args) throws Exception {
         // Suppose we have a local image "image_animal1.jpeg".
         // We'll base64 encode it and supply it as inline_data => "parts":[ {...}, {"inline_data": {...}} ]
-        Path imagePath = Path.of("src", "main", "resources", "images", "AboutMe.jpg");
+        Path imagePath = Path.of("gemini4j-examples", "src", "main", "resources", "image.jpg");
         byte[] fileBytes = Files.readAllBytes(imagePath);
         String base64Data = Base64.getEncoder().encodeToString(fileBytes);
 

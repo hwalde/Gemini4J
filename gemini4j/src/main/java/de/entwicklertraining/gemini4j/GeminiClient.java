@@ -20,7 +20,9 @@ import static de.entwicklertraining.api.base.ApiClient.HTTP_504_ServerTimeoutExc
  */
 public final class GeminiClient extends ApiClient {
 
-    private static final String DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
+    private static final String DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com";
+
+    private String apiKey;
 
     public GeminiClient() {
         this(ApiClientSettings.builder().build(), DEFAULT_BASE_URL);
@@ -37,9 +39,13 @@ public final class GeminiClient extends ApiClient {
         // Set base URL after super() call
         setBaseUrl(customBaseUrl);
 
+        // if a API key is provided use it, but remove it from the settings (to avoid having it set as Bearer)
+        if(settings.getBearerAuthenticationKey().isPresent()) {
+            this.apiKey = settings.getBearerAuthenticationKey().get();
+            this.settings = this.settings.toBuilder().setBearerAuthenticationKey(null).build();
         // if no API key is provided, try to read it from the environment variable
-        if(settings.getBearerAuthenticationKey().isEmpty() && System.getenv("GEMINI_API_KEY") != null) {
-            this.settings = this.settings.toBuilder().setBearerAuthenticationKey(System.getenv("GEMINI_API_KEY")).build();
+        } else if(System.getenv("GEMINI_API_KEY") != null){
+            this.apiKey = System.getenv("GEMINI_API_KEY");
         }
 
         // Register Gemini-specific HTTP status code exceptions
@@ -66,6 +72,10 @@ public final class GeminiClient extends ApiClient {
         public GeminiChatCompletionRequest.Builder completion() {
             return GeminiChatCompletionRequest.builder(client);
         }
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 
 }

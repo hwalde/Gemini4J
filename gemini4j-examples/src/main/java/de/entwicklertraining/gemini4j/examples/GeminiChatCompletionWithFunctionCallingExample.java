@@ -18,7 +18,7 @@ public class GeminiChatCompletionWithFunctionCallingExample {
                     JSONObject result = new JSONObject()
                             .put("city", loc)
                             .put("forecast", "Sunny, 20 C");
-                    return GeminiToolResult.of(result.toString());
+                    return GeminiToolResult.of(result);
                 })
                 .build();
 
@@ -30,7 +30,7 @@ public class GeminiChatCompletionWithFunctionCallingExample {
                 .model("gemini-2.5-flash-lite")
                 .addMessage("user", "What's the weather in Paris?")
                 .addTool(weatherTool)
-                .parallelToolCalls(true)
+                //.parallelToolCalls(true) // somehow this bugs => gemini gets stuck in a loop
                 .execute();
 
         // Print

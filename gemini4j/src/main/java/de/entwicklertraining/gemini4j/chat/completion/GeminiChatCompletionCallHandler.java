@@ -70,10 +70,10 @@ public final class GeminiChatCompletionCallHandler {
 
             // Add the assistant/model message to the conversation
             // Because Gemini often uses "role":"model" (rather than "assistant")
-            JSONObject assistantMessage = new JSONObject()
+            /*JSONObject assistantMessage = new JSONObject()
                     .put("role", "model")
                     .put("parts", new JSONArray().put(new JSONObject().put("text", response.assistantMessage())));
-            messages.add(assistantMessage);
+            messages.add(assistantMessage);*/
 
             if (functionCalls.isEmpty()) {
                 // No function calls => final response
@@ -81,6 +81,9 @@ public final class GeminiChatCompletionCallHandler {
             }
 
             // If we do have function calls, process them
+
+            var parts = new JSONArray();
+
             for (JSONObject fnCall : functionCalls) {
                 String toolName = fnCall.optString("name", null);
                 if (toolName == null || !toolMap.containsKey(toolName)) {
@@ -105,11 +108,25 @@ public final class GeminiChatCompletionCallHandler {
                 // we add a new message with "role"="user" (or system) and
                 // a "parts" array containing the result text from the tool.
                 // This feeds the next iteration in the conversation with that info.
-                JSONObject toolResponse = new JSONObject()
-                        .put("role", "user")
-                        .put("parts", new JSONArray().put(new JSONObject().put("text", result.content())));
-                messages.add(toolResponse);
+
+                parts.put(
+                    new JSONObject()
+                            .put("function_response", new JSONObject()
+                                    .put("name", toolName)
+                                    .put("response", result.content())
+                            )
+                );
+                //
             }
+
+            messages.add(
+                    response.getJson().getJSONArray("candidates").getJSONObject(0).getJSONObject("content")
+            );
+
+            JSONObject toolResponse = new JSONObject()
+                    .put("role", "user")
+                    .put("parts", parts);
+            messages.add(toolResponse);
 
             // build the next request
             currentRequest = buildNextRequest(initialRequest, messages);
@@ -172,14 +189,13 @@ public final class GeminiChatCompletionCallHandler {
                 .thinking(original.thinkingBudget())
                 .addAllMessages(updatedMessages);
 
-        // Note: Capture methods are not available in this version of api-base
-        // Commenting out until proper API methods are available
-        // if (original.isCaptureOnSuccess()) {
-        //     builder.captureOnSuccess();
-        // }
-        // if (original.isCaptureOnError()) {
-        //     builder.captureOnError();
-        // }
+        // Übernehmen der captureOnSuccess / captureOnError
+        if (original.hasCaptureOnSuccess()) {
+            builder.captureOnSuccess(original.getCaptureOnSuccess());
+        }
+        if (original.hasCaptureOnError()) {
+            builder.captureOnError(original.getCaptureOnError());
+        }
 
         return builder.build();
     }

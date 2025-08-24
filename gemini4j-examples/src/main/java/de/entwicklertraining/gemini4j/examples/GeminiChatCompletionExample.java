@@ -14,7 +14,7 @@ public class GeminiChatCompletionExample {
         
         // Minimal usage:
         GeminiChatCompletionResponse response = client.chat().completion()
-                .model("gemini-2.5-flash-lite") // or gemini-2.5-flash-lite
+                .model("gemini-2.5-flash-lite")
                 .addMessage("user", "Hello, how are you?")
                 .execute();
 

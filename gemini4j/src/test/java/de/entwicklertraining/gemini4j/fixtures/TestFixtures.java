@@ -96,7 +96,7 @@ public class TestFixtures {
         schema.put("required", new JSONArray().put("location"));
 
         // Create a simple callback for testing
-        GeminiToolsCallback callback = (context) -> GeminiToolResult.of("Weather data for location");
+        GeminiToolsCallback callback = (context) -> GeminiToolResult.of(new JSONObject().put("result", "Weather data for location"));
         
         // Use the constructor directly with all required parameters
         return GeminiToolDefinition.builder("get_weather")
