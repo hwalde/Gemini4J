@@ -7,7 +7,7 @@ and convenient way to access Gemini services from Java, being as close to the ra
 
 > **A word from the author**
 >
-> I created this library because I was looking for a Java library that interacts with the Gemini API while staying as close to the raw API as possible—the official Java library does not. This implementation is fully compatible with Gemini but only includes the features I personally require. I maintain similar libraries for DeepSeek and Gemini, each in its own repository so usage remains explicit. Everything supported by the Java API works here.
+> I created this library because I was looking for a Java library that interacts with the Gemini API while staying as close to the raw API as possible—the official Java library does not. This implementation is fully compatible with Gemini but only includes the features I personally require. I maintain similar libraries for DeepSeek and OpenAI, each in its own repository so usage remains explicit. Everything supported by the Java API works here.
 >
 > At the moment the library only covers the parts I need. Chat Completions are implemented with nearly every option, but many specialized endpoints—like Fine Tuning or Evals—are missing. If you need additional functionality, feel free to implement it yourself or submit a pull request and I will consider adding it.
 
